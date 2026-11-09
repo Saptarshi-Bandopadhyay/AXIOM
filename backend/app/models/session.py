@@ -10,6 +10,8 @@ from app.models.base import Base, TimestampMixin
 
 
 class SessionStatus(str, Enum):
+    """Lifecycle statuses of a review session."""
+
     PENDING_INPUT = "PENDING_INPUT"
     EXTRACTING = "EXTRACTING"
     CLASSIFYING = "CLASSIFYING"
@@ -20,19 +22,34 @@ class SessionStatus(str, Enum):
 
 
 class InputType(str, Enum):
+    """Supported input submission types."""
+
     PDF_UPLOAD = "PDF_UPLOAD"
     PASTED_TEXT = "PASTED_TEXT"
 
 
 class ReviewSession(Base, TimestampMixin):
+    """Represents a research paper review session."""
+
     __tablename__ = "review_sessions"
 
-    id: Mapped[uuid.UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[uuid.UUID | None] = mapped_column(Uuid(as_uuid=True), nullable=True, index=True)
-    status: Mapped[SessionStatus] = mapped_column(String(50), default=SessionStatus.PENDING_INPUT, index=True)
-    input_type: Mapped[InputType] = mapped_column(String(20), nullable=False)
-    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid(as_uuid=True), nullable=True, index=True
+    )
+    status: Mapped[SessionStatus] = mapped_column(
+        String(50), default=SessionStatus.PENDING_INPUT, index=True
+    )
+    input_type: Mapped[InputType] = mapped_column(
+        String(20), nullable=False
+    )
+    error_message: Mapped[str | None] = mapped_column(
+        Text, nullable=True
+    )
 
+    # 1:1 relationship with Paper
     paper: Mapped["Paper | None"] = relationship(
         "Paper",
         back_populates="session",
@@ -43,11 +60,18 @@ class ReviewSession(Base, TimestampMixin):
 
 
 class Paper(Base, TimestampMixin):
+    """Extracted text and section content of a submitted research paper."""
+
     __tablename__ = "papers"
 
-    id: Mapped[uuid.UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
     session_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("review_sessions.id", ondelete="CASCADE"), unique=True, index=True
+        Uuid(as_uuid=True),
+        ForeignKey("review_sessions.id", ondelete="CASCADE"),
+        unique=True,
+        index=True,
     )
     original_filename: Mapped[str | None] = mapped_column(String(255), nullable=True)
     file_path: Mapped[str | None] = mapped_column(String(512), nullable=True)

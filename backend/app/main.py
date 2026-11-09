@@ -1,4 +1,4 @@
-"""Main application entry point for ReproCheck backend."""
+"""Main FastAPI application entry point for ReproCheck backend."""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +13,7 @@ app = FastAPI(
     debug=settings.DEBUG,
 )
 
+# Enable CORS for frontend web client
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -24,4 +25,5 @@ app.add_middleware(
 
 @app.get("/health", tags=["System"])
 async def health_check() -> dict[str, str]:
+    """Health check endpoint to verify backend service availability."""
     return {"status": "ok", "service": "reprocheck-backend"}
