@@ -137,6 +137,14 @@ Entries are organized by phase and task.
   - Regex sanitization for path traversal: Fragile against URL-encoding or backslash variations.
 - **Reason**: `asyncio.to_thread` prevents event loop blocking without extra packages. `Path.relative_to` provides airtight path traversal defense.
 
+### CD-016: ExtractorInterface with Pydantic ExtractedDocument Schema
+- **Task**: Task 2.3 — Implement `ExtractorInterface` in `backend/app/interfaces/extractor.py`.
+- **Choice**: Define an abstract base class returning an `ExtractedDocument` Pydantic model with dedicated fields for title, abstract, methodology, experiments, results, and full text.
+- **Alternatives Considered**:
+  - Returning untyped Python dictionaries: Lacks validation and auto-complete for callers.
+  - Synchronous extraction contract: Would block the web event loop during multi-page document parsing.
+- **Reason**: Pydantic models guarantee typed section boundaries across different extractor implementations. Async methods prevent blocking during heavy document processing.
+
 ---
 
 ## Phase 3: Model Gateway, Guardrails, and Observability
