@@ -165,7 +165,37 @@ Entries are organized by phase and task.
 
 ## Phase 3: Model Gateway, Guardrails, and Observability
 
-*(Entries will be added as each Phase 3 task is implemented.)*
+### CD-019: Input Guardrails and Adversarial Prompt Injection Scanning
+- **Task**: Task 3.1 — Implement input guardrails in `backend/app/core/guardrails.py`.
+- **Choice**: Validate file size (20MB limit) and PDF magic header (`%PDF-`), and scan extracted or pasted text using regex heuristics for adversarial directives.
+- **Alternatives Considered**:
+  - Running a secondary LLM classifier for prompt injection on every input: Slower, costly, and wastes free API quotas.
+  - Relying solely on file extension without header inspection: Easily bypassed by renaming files.
+- **Reason**: Regex heuristics provide instantaneous, zero-cost defense against common jailbreak and override patterns without external dependencies.
+
+### CD-020: Deterministic SHA-256 Prompt Caching with In-Memory Fallback
+- **Task**: Task 3.3 — Implement prompt caching in `backend/app/core/cache.py`.
+- **Choice**: Serialize model name, messages, and parameters into a canonical JSON string and compute a SHA-256 hash. Query Redis and gracefully fall back to an in-memory dictionary if Redis is offline.
+- **Alternatives Considered**:
+  - Hard requirement on Redis: Causes local development and unit tests to fail if the Redis container is not running.
+  - Caching raw prompt strings without model parameters: Causes cache collisions when temperatures or system messages differ.
+- **Reason**: SHA-256 keys ensure deterministic cache hits across identical prompts. The in-memory fallback ensures zero setup friction during development.
+
+### CD-021: Exponential Backoff Retries and Provider Fallback Cascade
+- **Task**: Tasks 3.2, 3.4, 3.5 — Configure LiteLLM gateway with retries and fallback cascade in `backend/app/core/llm_gateway.py`.
+- **Choice**: Retry transient 429 and 5xx errors up to 2 times with exponential delay (`delay = base * 2^attempt`). If retries on the primary model (`gemini-1.5-flash`) fail, cascade to the fallback model (`llama-3.3-70b-versatile`).
+- **Alternatives Considered**:
+  - Immediate failure on 429: Causes workflow failures during rate spikes on free-tier APIs.
+  - Infinite retry loop: Stalls background workflow tasks when a provider experiences extended outages.
+- **Reason**: Balances resilience against transient rate spikes while providing seamless fallback to alternative providers.
+
+### CD-022: Langfuse Observability with Paper Text Privacy Masking
+- **Task**: Tasks 3.6, 3.7 — Implement Langfuse observability with paper data masking in `backend/app/core/llm_gateway.py`.
+- **Choice**: Wrap generation calls with Langfuse context manager (`start_as_current_observation`). Hash and mask long paper excerpts (`[MASKED len=... sha256=...]`) before recording trace inputs and outputs.
+- **Alternatives Considered**:
+  - Automatic Langfuse callback handlers: Leaks full research paper text to third-party telemetry servers.
+  - Omitting tracing completely: Removes latency and token usage visibility in production.
+- **Reason**: Protects unpublished paper research from data leakage while giving developers token, latency, and error tracking.
 
 ---
 

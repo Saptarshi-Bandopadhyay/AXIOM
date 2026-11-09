@@ -30,14 +30,14 @@ For each task:
 
 ## Phase 3: Model Gateway, Guardrails, and Observability
 
-- [ ] **Task 3.1**: Implement input guardrails for file size (20MB max), format, and prompt injection detection.
-- [ ] **Task 3.2**: Configure LiteLLM gateway with free models (`gemini-1.5-flash`, `llama-3.3-70b-versatile`).
-- [ ] **Task 3.3**: Implement Redis prompt caching using SHA-256 hash of model parameters and prompt content.
-- [ ] **Task 3.4**: Implement retry engine with exponential backoff on rate limits (429) and server errors (5xx).
-- [ ] **Task 3.5**: Implement provider fallback cascade switching to `llama-3.1-8b-instant` when primary fails.
-- [ ] **Task 3.6**: Implement Langfuse observability using `start_as_current_observation` and `propagate_attributes`.
-- [ ] **Task 3.7**: Implement paper text data masking to prevent sending raw paper text to external trace logs.
-- [ ] **Task 3.8**: Add unit tests in `tests/unit/test_gateway.py` and `tests/unit/test_guardrails.py`.
+- [x] **Task 3.1**: Implement input guardrails for file size (20MB max), format, and prompt injection detection.
+- [x] **Task 3.2**: Configure LiteLLM gateway with free models (`gemini-1.5-flash`, `llama-3.3-70b-versatile`).
+- [x] **Task 3.3**: Implement Redis prompt caching using SHA-256 hash of model parameters and prompt content.
+- [x] **Task 3.4**: Implement retry engine with exponential backoff on rate limits (429) and server errors (5xx).
+- [x] **Task 3.5**: Implement provider fallback cascade switching to `llama-3.1-8b-instant` when primary fails.
+- [x] **Task 3.6**: Implement Langfuse observability using `start_as_current_observation` and `propagate_attributes`.
+- [x] **Task 3.7**: Implement paper text data masking to prevent sending raw paper text to external trace logs.
+- [x] **Task 3.8**: Add unit tests in `tests/unit/test_gateway.py` and `tests/unit/test_guardrails.py`.
 
 ## Phase 4: LangGraph Review Workflow Engine
 
