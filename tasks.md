@@ -22,7 +22,7 @@ For each task:
 ## Phase 2: Core Abstractions, Storage, and PDF Extraction
 
 - [x] **Task 2.1**: Implement `StorageInterface` in `backend/app/interfaces/storage.py`.
-- [ ] **Task 2.2**: Implement concrete `LocalStorageService` for reading and writing files on disk.
+- [x] **Task 2.2**: Implement concrete `LocalStorageService` for reading and writing files on disk.
 - [ ] **Task 2.3**: Implement `ExtractorInterface` in `backend/app/interfaces/extractor.py`.
 - [ ] **Task 2.4**: Implement `PyMuPDFExtractor` with two-column reading order support (`sort=True`).
 - [ ] **Task 2.5**: Implement section segmentation logic (Title, Abstract, Methodology, Experiments, Results).

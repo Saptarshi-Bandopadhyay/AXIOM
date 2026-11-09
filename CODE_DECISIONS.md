@@ -128,6 +128,15 @@ Entries are organized by phase and task.
   - Synchronous filesystem calls: Blocks the asyncio event loop during disk I/O and future cloud uploads.
 - **Reason**: Async methods prevent event-loop stalling. Operating on raw `bytes` maintains a clean, simple contract (KISS) across local disk, AWS S3, and Google Cloud Storage.
 
+### CD-015: Non-Blocking File I/O and Path Traversal Protection
+- **Task**: Task 2.2 — Implement `LocalStorageService` in `backend/app/services/local_storage.py`.
+- **Choice**: Use `asyncio.to_thread` for all disk operations, and validate paths via `target.resolve().relative_to(self.base_dir)`.
+- **Alternatives Considered**:
+  - Direct synchronous `Path.read_bytes()` / `write_bytes()`: Blocks the asyncio event loop during file I/O.
+  - Adding `aiofiles` dependency: Unnecessary dependency when `asyncio.to_thread` is built-in and robust.
+  - Regex sanitization for path traversal: Fragile against URL-encoding or backslash variations.
+- **Reason**: `asyncio.to_thread` prevents event loop blocking without extra packages. `Path.relative_to` provides airtight path traversal defense.
+
 ---
 
 ## Phase 3: Model Gateway, Guardrails, and Observability
