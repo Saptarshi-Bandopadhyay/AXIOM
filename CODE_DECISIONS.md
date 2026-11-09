@@ -145,6 +145,14 @@ Entries are organized by phase and task.
   - Synchronous extraction contract: Would block the web event loop during multi-page document parsing.
 - **Reason**: Pydantic models guarantee typed section boundaries across different extractor implementations. Async methods prevent blocking during heavy document processing.
 
+### CD-017: PyMuPDF Reading Order and Heading-Based Section Segmentation
+- **Task**: Tasks 2.4 & 2.5 — Implement `PyMuPDFExtractor` with reading order and section segmentation.
+- **Choice**: Use `page.get_text("text", sort=True)` combined with concise regex heading matching and a fallback to `full_text` when explicit methodology headers are missing.
+- **Alternatives Considered**:
+  - Complex XML/bounding-box layout engines: Hundreds of lines of code with brittle heuristics across diverse LaTeX templates.
+  - LLM-based section segmentation: Slower, costly, and burns model quota on basic parsing.
+- **Reason**: Achieves clean multi-column reading order in under 115 lines of code (minimizing code liability) while providing reliable fallback handling.
+
 ---
 
 ## Phase 3: Model Gateway, Guardrails, and Observability

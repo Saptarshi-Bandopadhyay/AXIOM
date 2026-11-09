@@ -24,9 +24,9 @@ For each task:
 - [x] **Task 2.1**: Implement `StorageInterface` in `backend/app/interfaces/storage.py`.
 - [x] **Task 2.2**: Implement concrete `LocalStorageService` for reading and writing files on disk.
 - [x] **Task 2.3**: Implement `ExtractorInterface` in `backend/app/interfaces/extractor.py`.
-- [ ] **Task 2.4**: Implement `PyMuPDFExtractor` with two-column reading order support (`sort=True`).
-- [ ] **Task 2.5**: Implement section segmentation logic (Title, Abstract, Methodology, Experiments, Results).
-- [ ] **Task 2.6**: Add unit tests in `tests/unit/test_storage.py` and `tests/unit/test_extractor.py`.
+- [x] **Task 2.4**: Implement `PyMuPDFExtractor` with two-column reading order support (`sort=True`).
+- [x] **Task 2.5**: Implement section segmentation logic (Title, Abstract, Methodology, Experiments, Results).
+- [x] **Task 2.6**: Add unit tests in `tests/unit/test_storage.py` and `tests/unit/test_extractor.py`.
 
 ## Phase 3: Model Gateway, Guardrails, and Observability
 
