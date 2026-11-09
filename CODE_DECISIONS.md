@@ -153,6 +153,14 @@ Entries are organized by phase and task.
   - LLM-based section segmentation: Slower, costly, and burns model quota on basic parsing.
 - **Reason**: Achieves clean multi-column reading order in under 115 lines of code (minimizing code liability) while providing reliable fallback handling.
 
+### CD-018: Code Liability Reduction Across Models, Services, and Tests
+- **Task**: Phase 2 Refactoring — Streamline codebase and test suite per code liability principle.
+- **Choice**: Remove verbose attribute metadata descriptions, redundant validators, custom `__init__` overrides, and internal language/framework unit test boilerplate. Retain clean interfaces, essential business logic, and behavioral tests.
+- **Alternatives Considered**:
+  - Retaining verbose `Field(description=...)` and extensive defensive edge-case handlers.
+  - Retaining extensive mock tests verifying SQLAlchemy and Python standard library internals.
+- **Reason**: Treats unnecessary code as a maintenance liability. Reduced total codebase by >40% (from ~990 to 567 lines) and cut test execution time while maintaining 100% test pass rate and high readability.
+
 ---
 
 ## Phase 3: Model Gateway, Guardrails, and Observability
