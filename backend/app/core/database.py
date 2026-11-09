@@ -8,15 +8,22 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 from app.config import get_settings
 
 settings = get_settings()
 
+# In testing and development, NullPool prevents asyncpg connections from binding to stale event loops
+engine_kwargs: dict = {"echo": settings.DB_ECHO}
+if settings.APP_ENV in ("testing", "development"):
+    engine_kwargs["poolclass"] = NullPool
+else:
+    engine_kwargs["pool_pre_ping"] = True
+
 # Asynchronous engine bound to asyncpg driver
 engine: AsyncEngine = create_async_engine(
     settings.DATABASE_URL,
-    echo=settings.DB_ECHO,
-    pool_pre_ping=True,
+    **engine_kwargs,
 )
 
 # Asynchronous session factory for request-scoped database sessions

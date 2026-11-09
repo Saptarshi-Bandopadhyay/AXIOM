@@ -244,7 +244,36 @@ Entries are organized by phase and task.
 
 ## Phase 5: FastAPI Backend Endpoints
 
-*(Entries will be added as each Phase 5 task is implemented.)*
+### CD-028: Clean Dependency Injection for Sessions and Services
+- **Task**: Task 5.1 — Implement dependency providers in `backend/app/api/deps.py`.
+- **Choice**: Use standard FastAPI `Depends()` for database sessions, `StorageInterface`, `ExtractorInterface`, and `WorkflowService`.
+- **Alternatives Considered**:
+  - Global variable imports inside route handlers: Makes unit and integration test mocking cumbersome.
+  - Complex dependency containers (e.g., dependency-injector): Unnecessary abstraction overhead for a focused service layer.
+- **Reason**: Standard FastAPI dependencies enable seamless override during testing (`app.dependency_overrides`) while maintaining clean separation of concerns.
+
+### CD-029: BackgroundTasks Workflow Progression without Heavy Task Queues
+- **Task**: Tasks 5.2 & 5.3 — Coordinate workflow state machine from REST endpoints.
+- **Choice**: Dispatch workflow stages (`execute_initial_phase` and `resume_with_approval`) using FastAPI's built-in `BackgroundTasks`.
+- **Alternatives Considered**:
+  - Introducing Celery or RabbitMQ: Adds substantial operational complexity and broker dependencies before real production scale justifies it.
+  - Running workflow steps synchronously inside HTTP request handlers: Causes client HTTP request timeouts during multi-page LLM reviews.
+- **Reason**: `BackgroundTasks` returns HTTP 201 immediately while executing the LangGraph review in the background, minimizing code liability and operational overhead.
+
+### CD-030: Boundary Guardrails and Multi-Input Validation
+- **Task**: Tasks 5.2 & 5.3 — Validate PDF uploads and pasted methodology submissions.
+- **Choice**: Perform size, format, magic bytes, and adversarial prompt injection validation at the route boundary before persisting or running extraction.
+- **Alternatives Considered**:
+  - Checking security guardrails inside LangGraph nodes: Wastes storage I/O and creates unnecessary database records for invalid or malicious inputs.
+- **Reason**: Fails fast at the API perimeter with clear HTTP 400 errors, protecting background workflows from malformed or hostile payloads.
+
+### CD-031: NullPool Asyncpg Configuration for Multi-Loop Testing and Local Dev
+- **Task**: Task 5.6 — Configure SQLAlchemy engine pool class in `app/core/database.py`.
+- **Choice**: Automatically select `NullPool` when `APP_ENV` is `"testing"` or `"development"`.
+- **Alternatives Considered**:
+  - Forcing manual connection closing across every test function: Brittle and prone to regressions when new tests are added.
+  - Using synchronous SQLite for tests: Diverges from PostgreSQL native JSONB and Uuid types.
+- **Reason**: Prevents `RuntimeError: got Future attached to a different loop` when function-scoped async pytest loops close, while retaining identical PostgreSQL dialect behavior.
 
 ---
 

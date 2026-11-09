@@ -53,12 +53,12 @@ For each task:
 
 ## Phase 5: FastAPI Backend Endpoints
 
-- [ ] **Task 5.1**: Implement dependency injection for database sessions, services, and session context.
-- [ ] **Task 5.2**: Implement session creation, PDF upload, and pasted methodology endpoints in `sessions.py`.
-- [ ] **Task 5.3**: Implement checklist retrieval, edit, and approval endpoints in `checklists.py`.
-- [ ] **Task 5.4**: Implement review status polling and report retrieval endpoints in `reviews.py`.
-- [ ] **Task 5.5**: Implement grounded Q&A endpoint in `qna.py`.
-- [ ] **Task 5.6**: Add API integration tests in `tests/integration/test_api.py`.
+- [x] **Task 5.1**: Implement dependency injection for database sessions, services, and session context.
+- [x] **Task 5.2**: Implement session creation, PDF upload, and pasted methodology endpoints in `sessions.py`.
+- [x] **Task 5.3**: Implement checklist retrieval, edit, and approval endpoints in `checklists.py`.
+- [x] **Task 5.4**: Implement review status polling and report retrieval endpoints in `reviews.py`.
+- [x] **Task 5.5**: Implement grounded Q&A endpoint in `qna.py`.
+- [x] **Task 5.6**: Add API integration tests in `tests/integration/test_api.py`.
 
 ## Phase 6: Backend Multi-Level DeepEval Test Suite
 
