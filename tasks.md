@@ -41,15 +41,15 @@ For each task:
 
 ## Phase 4: LangGraph Review Workflow Engine
 
-- [ ] **Task 4.1**: Define `ReviewGraphState` typed schema in `backend/app/workflows/state.py`.
-- [ ] **Task 4.2**: Implement research paradigm classification node with extensible two-tier taxonomy.
-- [ ] **Task 4.3**: Implement checklist generation node with Tier 1 and Tier 2 criteria and rationales.
-- [ ] **Task 4.4**: Implement human-in-the-loop pause (`interrupt()`) and PostgreSQL state checkpointing.
-- [ ] **Task 4.5**: Implement methodology completeness review node with verbatim quote extraction.
-- [ ] **Task 4.6**: Implement cross-section inconsistency node comparing methodology, experiments, and results.
-- [ ] **Task 4.7**: Implement qualitative overall assessment synthesis node.
-- [ ] **Task 4.8**: Implement grounded Q&A node restricted to paper text and review findings.
-- [ ] **Task 4.9**: Add workflow integration tests in `tests/integration/test_workflow.py`.
+- [x] **Task 4.1**: Define `ReviewGraphState` typed schema in `backend/app/workflows/state.py`.
+- [x] **Task 4.2**: Implement research paradigm classification node with extensible two-tier taxonomy.
+- [x] **Task 4.3**: Implement checklist generation node with Tier 1 and Tier 2 criteria and rationales.
+- [x] **Task 4.4**: Implement human-in-the-loop pause (`interrupt()`) and PostgreSQL state checkpointing.
+- [x] **Task 4.5**: Implement methodology completeness review node with verbatim quote extraction.
+- [x] **Task 4.6**: Implement cross-section inconsistency node comparing methodology, experiments, and results.
+- [x] **Task 4.7**: Implement qualitative overall assessment synthesis node.
+- [x] **Task 4.8**: Implement grounded Q&A node restricted to paper text and review findings.
+- [x] **Task 4.9**: Add workflow integration tests in `tests/integration/test_workflow.py`.
 
 ## Phase 5: FastAPI Backend Endpoints
 

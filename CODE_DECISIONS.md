@@ -201,7 +201,44 @@ Entries are organized by phase and task.
 
 ## Phase 4: LangGraph Review Workflow Engine
 
-*(Entries will be added as each Phase 4 task is implemented.)*
+### CD-023: LangGraph Typed State Schema with Component Validation
+- **Task**: Task 4.1 — Define state schema in `backend/app/workflows/state.py`.
+- **Choice**: Use a `TypedDict` (`ReviewGraphState`) for LangGraph state passing combined with strict Pydantic models (`ChecklistItem`, `ReviewFinding`, `InconsistencyItem`, `OverallAssessment`) for node inputs and outputs.
+- **Alternatives Considered**:
+  - Pure untyped dictionaries: Prone to missing key errors across graph nodes.
+  - Pydantic BaseModel as root graph state: Slower in LangGraph state transitions and serialization.
+- **Reason**: Combines LangGraph native TypedDict graph execution with typed Pydantic validation at node boundaries.
+
+### CD-024: Two-Tier Review Taxonomy with Paradigm Inheritance
+- **Task**: Tasks 4.2 & 4.3 — Implement classification and checklist generation nodes.
+- **Choice**: Use Tier 1 for universal empirical rigor (compute, hyperparameters, datasets, variance, baselines) and Tier 2 for domain-specific criteria based on the classified paradigm (RAG, Agents, Fine-Tuning, etc.).
+- **Alternatives Considered**:
+  - One generic checklist for all papers: Misses critical domain details (e.g., chunk size in RAG).
+  - Completely custom unconstrained checklists: Generates arbitrary or irrelevant criteria.
+- **Reason**: Guarantees standard scientific rigor across all empirical AI papers while evaluating domain-specific contributions.
+
+### CD-025: Human-in-the-Loop Interrupt Pattern for Checklist Approval
+- **Task**: Task 4.4 — Implement checklist approval pause in `backend/app/workflows/nodes/approval.py`.
+- **Choice**: Use `langgraph.types.interrupt()` to pause workflow execution, and resume via `Command(resume=approved_checklist)`.
+- **Alternatives Considered**:
+  - Splitting the workflow into two disconnected StateGraphs: Requires duplicate session retrieval logic and manual state synchronization.
+  - Polling a database table within a synchronous loop: Wastes compute resources and blocks worker threads.
+- **Reason**: Native LangGraph `interrupt()` pauses execution cleanly, saves state to the checkpointer, and allows immediate resumption when user approval arrives.
+
+### CD-026: Grounded Evidence Extraction and Pasted Text Scoping
+- **Task**: Tasks 4.5 & 4.6 — Implement review and cross-section inconsistency nodes.
+- **Choice**: Require verbatim quotes for `MET` and `INCOMPLETE` findings. Automatically skip cross-section inconsistency checks when only methodology text is submitted (`PASTED_TEXT`).
+- **Alternatives Considered**:
+  - Synthesizing paraphrased quotes: Risks hallucinating details not stated in the paper.
+  - Forcing cross-section checks on single-section inputs: Causes false positive discrepancies.
+- **Reason**: Protects review truthfulness by ensuring every finding is backed by verbatim paper excerpts, and gracefully scopes checks when input is limited.
+
+### CD-027: Qualitative Assessment Synthesizer without Numerical Scoring
+- **Task**: Task 4.7 — Implement assessment node in `backend/app/workflows/nodes/assessment.py`.
+- **Choice**: Constrain the overall assessment to three qualitative labels (`Well documented`, `Partially documented`, `Insufficiently documented`) with strengths and critical gaps.
+- **Alternatives Considered**:
+  - Computing a numerical score (e.g., 0-100 or percentage): Gives a misleading impression of precision and scientific validity.
+- **Reason**: Follows project guidelines (PROJECT.md section 6.5) by focusing on descriptive reporting completeness rather than subjective numeric grading.
 
 ---
 
