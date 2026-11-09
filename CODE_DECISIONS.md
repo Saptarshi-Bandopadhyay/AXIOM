@@ -279,7 +279,47 @@ Entries are organized by phase and task.
 
 ## Phase 6: Backend Multi-Level DeepEval Test Suite
 
-*(Entries will be added as each Phase 6 task is implemented.)*
+### CD-032: Paradigm Classification Accuracy Evaluation
+- **Task**: Task 6.1 — Implement `backend/tests/evaluation/test_01_classification.py`.
+- **Choice**: Evaluate classification accuracy across distinct paradigm profiles (RAG, Fine-Tuning, Agents, Novel AI) using DeepEval `LLMTestCase`.
+- **Alternatives Considered**:
+  - Relying solely on basic unit tests with single mocked strings: Fails to verify taxonomy generalization across varied paper abstracts.
+- **Reason**: Confirms the classifier reliably maps standard and novel research papers to valid primary types and non-empty rationales.
+
+### CD-033: Checklist Quality and Non-Redundancy Verification
+- **Task**: Task 6.2 — Implement `backend/tests/evaluation/test_02_checklist_quality.py`.
+- **Choice**: Enforce two-tier criteria presence (universal rigor Tier 1, domain Tier 2), unique IDs/questions, and descriptive rationales (>=15 chars).
+- **Alternatives Considered**:
+  - Only checking list length: Ignores duplicate criteria, missing domain categories, and vague rationale text.
+- **Reason**: Ensures generated checklists maintain high quality and prevent redundant criteria before presenting them to the user.
+
+### CD-034: Methodology Completeness and Omission Detection
+- **Task**: Task 6.3 — Implement `backend/tests/evaluation/test_03_review_completeness.py`.
+- **Choice**: Evaluate detection of intentional omissions (missing seeds, compute, baselines) vs fully reported papers. Validate `MISSING` and `INCOMPLETE` statuses and `CRITICAL` severity flags.
+- **Alternatives Considered**:
+  - Only testing papers with positive results: Misses false negatives where omitted methodology details pass undetected.
+- **Reason**: Verifies that the review node reliably detects missing empirical details and highlights them with appropriate severity.
+
+### CD-035: Cross-Section Inconsistency and Scoping Verification
+- **Task**: Task 6.4 — Implement `backend/tests/evaluation/test_04_consistency_check.py`.
+- **Choice**: Test factual contradictions between methodology and experiments, verify consistent sections yield 0 discrepancies, and ensure single-section inputs gracefully skip cross-section checks.
+- **Alternatives Considered**:
+  - Forcing consistency checks on all inputs: Produces false positive discrepancies on text submissions with no experiment section.
+- **Reason**: Prevents false alarms on consistent papers and safely handles single-section pasted methodology inputs.
+
+### CD-036: Verbatim Evidence Grounding and Hallucination Defense
+- **Task**: Task 6.5 — Implement `backend/tests/evaluation/test_05_evidence_grounding.py`.
+- **Choice**: Verify that all `evidence_quotes` on `MET` and `INCOMPLETE` findings are exact substrings of the paper text, and enforce empty quotes on `MISSING` findings.
+- **Alternatives Considered**:
+  - Allowing paraphrased evidence: Allows hallucinated facts to appear as legitimate paper quotes.
+- **Reason**: Upholds scientific integrity by guaranteeing all cited review evidence directly matches the submitted paper.
+
+### CD-037: Grounded Q&A Faithfulness and Refusal Enforcement
+- **Task**: Task 6.6 — Implement `backend/tests/evaluation/test_06_qna_faithfulness.py`.
+- **Choice**: Verify that in-scope queries receive grounded answers citing findings, out-of-scope queries are explicitly declined, and empty queries prompt for input.
+- **Alternatives Considered**:
+  - Permitting general conversation in Q&A: Turns the tool into a generic ungrounded chatbot.
+- **Reason**: Enforces strict grounding boundaries, preventing the assistant from hallucinating or answering off-topic queries.
 
 ---
 

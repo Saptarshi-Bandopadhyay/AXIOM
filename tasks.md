@@ -62,12 +62,12 @@ For each task:
 
 ## Phase 6: Backend Multi-Level DeepEval Test Suite
 
-- [ ] **Task 6.1**: Implement `test_01_classification.py` for standard and novel research paradigms.
-- [ ] **Task 6.2**: Implement `test_02_checklist_quality.py` for relevance, clarity, and non-redundancy.
-- [ ] **Task 6.3**: Implement `test_03_review_completeness.py` for missing methodology detection.
-- [ ] **Task 6.4**: Implement `test_04_consistency_check.py` for section discrepancy detection.
-- [ ] **Task 6.5**: Implement `test_05_evidence_grounding.py` for verbatim quotation verification.
-- [ ] **Task 6.6**: Implement `test_06_qna_faithfulness.py` for answer grounding and out-of-scope refusal.
+- [x] **Task 6.1**: Implement `test_01_classification.py` for standard and novel research paradigms.
+- [x] **Task 6.2**: Implement `test_02_checklist_quality.py` for relevance, clarity, and non-redundancy.
+- [x] **Task 6.3**: Implement `test_03_review_completeness.py` for missing methodology detection.
+- [x] **Task 6.4**: Implement `test_04_consistency_check.py` for section discrepancy detection.
+- [x] **Task 6.5**: Implement `test_05_evidence_grounding.py` for verbatim quotation verification.
+- [x] **Task 6.6**: Implement `test_06_qna_faithfulness.py` for answer grounding and out-of-scope refusal.
 
 ## Phase 7: Frontend Setup and User Interface
 
