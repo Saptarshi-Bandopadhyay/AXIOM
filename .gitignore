@@ -1,0 +1,28 @@
+# Environment and Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Binary tools
+.bin/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Storage and Files
+data/uploads/
+storage/uploads/
+*.pdf
+
+# IDE and OS
+.DS_Store
+.idea/
+.vscode/
