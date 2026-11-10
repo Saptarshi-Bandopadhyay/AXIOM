@@ -26,6 +26,31 @@ Install dependencies using `uv`:
 uv sync
 ```
 
+### PostgreSQL & Redis Setup
+
+#### Option A: Native Local Services (Without Docker)
+```bash
+# Ubuntu/Debian:
+sudo apt install postgresql redis-server
+sudo systemctl start postgresql redis-server
+
+# Configure database and user credentials:
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+sudo -u postgres psql -c "CREATE DATABASE reprocheck OWNER postgres;"
+
+# macOS:
+brew install postgresql@16 redis
+brew services start postgresql@16 redis
+```
+
+#### Option B: Docker Compose
+From the project root:
+```bash
+docker compose up -d
+```
+
+*(Note: Redis is optional in development; ReproCheck falls back to an in-memory cache if Redis is unavailable.)*
+
 ### Database Migrations
 Apply migrations to local PostgreSQL:
 ```bash

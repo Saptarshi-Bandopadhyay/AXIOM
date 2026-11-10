@@ -298,10 +298,69 @@ LANGFUSE_HOST="https://cloud.langfuse.com"
 ```
 
 ### 2. Start PostgreSQL & Redis
-Using the provided `docker-compose.yml`:
+
+You can run PostgreSQL and Redis either locally on your host system (native service) or using Docker Compose.
+
+#### Option A: Native Local Installation (Without Docker)
+
+##### 1. Install PostgreSQL and Redis
+
+- **Ubuntu / Debian**:
+  ```bash
+  sudo apt update
+  sudo apt install postgresql postgresql-contrib redis-server
+  ```
+
+- **macOS (Homebrew)**:
+  ```bash
+  brew install postgresql@16 redis
+  ```
+
+##### 2. Start System Services
+
+- **Ubuntu / Debian**:
+  ```bash
+  sudo systemctl start postgresql
+  sudo systemctl start redis-server
+  # Optional: enable them to start automatically on system boot
+  sudo systemctl enable postgresql redis-server
+  ```
+
+- **macOS**:
+  ```bash
+  brew services start postgresql@16
+  brew services start redis
+  ```
+
+##### 3. Create Database & User
+Configure the `reprocheck` database and credentials matching `DATABASE_URL`:
+```bash
+# Set password for postgres user and create reprocheck database
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+sudo -u postgres psql -c "CREATE DATABASE reprocheck OWNER postgres;"
+```
+
+##### 4. Verify Local Services
+```bash
+# Verify PostgreSQL connectivity
+pg_isready -h 127.0.0.1 -p 5432
+# Output: 127.0.0.1:5432 - accepting connections
+
+# Verify Redis connectivity
+redis-cli ping
+# Output: PONG
+```
+
+> [!NOTE]
+> Redis is optional for local development. If Redis is not running, ReproCheck automatically falls back to an in-memory dictionary cache.
+
+#### Option B: Docker Compose (Convenience Container)
+
+If you prefer running services inside containers, use the provided `docker-compose.yml`:
 ```bash
 docker compose up -d
 ```
+This starts PostgreSQL 16 on port `5432` and Redis 7 on port `6379`.
 
 ### 3. Run Database Migrations
 Apply Alembic migrations to create tables and schemas:
