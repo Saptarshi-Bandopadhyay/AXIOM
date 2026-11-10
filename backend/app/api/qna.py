@@ -18,3 +18,8 @@ async def ask_grounded_question(
     """Submit a question to the evidence-grounded reviewer assistant."""
     answer = await workflow.answer_question(session.id, request.question)
     return AnswerResponse(question=request.question, answer=answer)
+
+
+# Top-level route alias for /qna/{session_id}
+alias_router = APIRouter(prefix="/qna/{session_id}", tags=["Grounded Q&A"])
+alias_router.add_api_route("", ask_grounded_question, methods=["POST"], response_model=AnswerResponse)

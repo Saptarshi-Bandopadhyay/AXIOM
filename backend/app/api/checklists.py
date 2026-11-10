@@ -59,3 +59,9 @@ async def approve_session_checklist(
         checklist=request.checklist,
         approved=True,
     )
+
+
+# Top-level route aliases for /checklists/{session_id}
+alias_router = APIRouter(prefix="/checklists/{session_id}", tags=["Checklists"])
+alias_router.add_api_route("", get_session_checklist, methods=["GET"], response_model=ChecklistResponse)
+alias_router.add_api_route("/approve", approve_session_checklist, methods=["POST"], response_model=ChecklistResponse)

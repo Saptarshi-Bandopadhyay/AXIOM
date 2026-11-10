@@ -65,3 +65,9 @@ async def get_review_report(
         inconsistencies=inconsistencies,
         overall_assessment=assessment,
     )
+
+
+# Top-level route aliases for /reviews/{session_id}
+alias_router = APIRouter(prefix="/reviews/{session_id}", tags=["Reviews"])
+alias_router.add_api_route("/status", get_review_status, methods=["GET"], response_model=ReviewStatusResponse)
+alias_router.add_api_route("/report", get_review_report, methods=["GET"], response_model=ReviewReportResponse)

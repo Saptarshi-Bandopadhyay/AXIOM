@@ -371,4 +371,37 @@ Entries are organized by phase and task.
 
 ## Phase 8: End-to-End Verification and Documentation
 
-*(Entries will be added as each Phase 8 task is implemented.)*
+### CD-044: Multi-Stage End-to-End Verification Lifecycle
+- **Task**: Tasks 8.1, 8.2, 8.3 & 8.4 — Implement `backend/tests/integration/test_e2e_verification.py`.
+- **Choice**: Execute full lifecycle verification against an academic paper with known reproducibility gaps (missing seeds, compute omissions, untuned baselines).
+- **Alternatives Considered**:
+  - Relying solely on isolated unit tests for verification: Misses cross-boundary race conditions between FastAPI BackgroundTasks, SQLAlchemy sessions, and PostgreSQL checkpoints.
+- **Reason**: Confirms the complete workflow functions end-to-end: input submission, classification, checklist generation, human edit/approval resumption, omission detection, verbatim evidence extraction, and grounded Q&A refusal.
+
+### CD-045: Defensive Checklist Item Normalization
+- **Task**: Task 8.2 — Safeguard checklist parsing in `backend/app/workflows/nodes/checklist.py`.
+- **Choice**: Normalize raw string list entries (`if isinstance(item, str)`) into valid dictionary structures before Pydantic schema validation.
+- **Alternatives Considered**:
+  - Immediately raising validation exceptions: Causes workflow failures when third-party models return simplified string arrays instead of full objects.
+- **Reason**: Robustly handles model variance while falling back cleanly to standard Tier 1 criteria if malformed data arrives.
+
+### CD-046: Dual Route Path Support (Resource-First and Session-First Hierarchies)
+- **Task**: Task 8.3 — Support route aliases across API modules.
+- **Choice**: Expose endpoints under both `/sessions/{id}/checklist` and `/checklists/{id}`, `/sessions/{id}/report` and `/reviews/{id}/report`, and `/sessions/{id}/qna` and `/qna/{id}`.
+- **Alternatives Considered**:
+  - Enforcing a single strict route scheme: Creates 404 errors when clients access resources using different conventions.
+- **Reason**: Provides an intuitive API surface that accommodates both hierarchical session clients and resource-first API consumers.
+
+### CD-047: Pytest Directory Scoping for Node Modules Isolation
+- **Task**: Task 8.1 — Configure `norecursedirs` in `backend/pyproject.toml`.
+- **Choice**: Explicitly ignore `node_modules`, `dist`, `.bin`, `.venv`, and `.git` in pytest options.
+- **Alternatives Considered**:
+  - Relying on default pytest discovery: Pytest scans thousands of JavaScript files in `frontend/node_modules`, causing severe collection delays.
+- **Reason**: Decreases pytest test collection time by >80% and isolates backend test discovery.
+
+### CD-048: Comprehensive Project Documentation and ASD-STE100 Compliance
+- **Task**: Task 8.5 — Update root `README.md`, `backend/README.md`, `tasks.md`, and `DECISIONS.md`.
+- **Choice**: Provide detailed end-to-end documentation with architectural Mermaid diagrams, sequence flows, tech stack tables, API references, and quick-start instructions using short active-voice sentences.
+- **Alternatives Considered**:
+  - Minimal bullet point README: Leaves external developers uncertain about architecture, execution flows, and setup.
+- **Reason**: Ensures any engineer reading the documentation can understand the full project architecture, data flows, and setup instructions immediately.

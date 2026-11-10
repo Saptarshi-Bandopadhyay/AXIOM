@@ -98,6 +98,8 @@ async def generate_checklist(state: ReviewGraphState) -> dict[str, Any]:
         # Validate with Pydantic ChecklistItem schema
         validated_items: list[dict[str, Any]] = []
         for idx, item in enumerate(raw_items):
+            if isinstance(item, str):
+                item = {"criterion": item, "category": "Methodology", "rationale": "Empirical check."}
             item_id = item.get("id") or f"CRIT-{idx + 1}"
             validated = ChecklistItem(
                 id=item_id,

@@ -82,8 +82,8 @@ For each task:
 
 ## Phase 8: End-to-End Verification and Documentation
 
-- [ ] **Task 8.1**: Run full automated backend test suite (`uv run pytest tests/`).
-- [ ] **Task 8.2**: Perform manual review of a sample academic paper with known methodological gaps.
-- [ ] **Task 8.3**: Verify human-in-the-loop checklist edit and approval flow.
-- [ ] **Task 8.4**: Verify verbatim quotes in findings report and grounded Q&A responses.
-- [ ] **Task 8.5**: Update project documentation and record final observations.
+- [x] **Task 8.1**: Run full automated backend test suite (`uv run pytest tests/`).
+- [x] **Task 8.2**: Perform manual review of a sample academic paper with known methodological gaps.
+- [x] **Task 8.3**: Verify human-in-the-loop checklist edit and approval flow.
+- [x] **Task 8.4**: Verify verbatim quotes in findings report and grounded Q&A responses.
+- [x] **Task 8.5**: Update project documentation and record final observations.
