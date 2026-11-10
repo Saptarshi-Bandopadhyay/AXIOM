@@ -62,10 +62,17 @@ def _extract_json_list(text: str) -> list[dict[str, Any]]:
     """Parse JSON list of items from LLM response text."""
     cleaned = text.strip()
     if "```" in cleaned:
-        match = re.search(r"```(?:json)?\s*(\[[\s\S]*?\])\s*```", cleaned)
+        match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", cleaned)
         if match:
-            cleaned = match.group(1)
-    return json.loads(cleaned)
+            cleaned = match.group(1).strip()
+    data = json.loads(cleaned)
+    if isinstance(data, dict):
+        for key in ("checklist", "criteria", "items", "evaluation_criteria"):
+            if key in data and isinstance(data[key], list):
+                return data[key]
+    if isinstance(data, list):
+        return data
+    raise ValueError(f"Could not extract checklist criteria list from response: {type(data)}")
 
 
 async def generate_checklist(state: ReviewGraphState) -> dict[str, Any]:

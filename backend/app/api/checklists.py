@@ -19,6 +19,11 @@ async def get_session_checklist(
     snapshot = await workflow.get_state_snapshot(session.id)
     raw_checklist = snapshot.get("checklist", [])
 
+    # If workflow state checklist is empty, provide fallback Tier 1 checklist
+    if not raw_checklist and session.status == SessionStatus.AWAITING_CHECKLIST_APPROVAL:
+        from app.workflows.nodes.checklist import FALLBACK_TIER1_CHECKLIST
+        raw_checklist = FALLBACK_TIER1_CHECKLIST
+
     items = [ChecklistItem(**item) for item in raw_checklist]
     is_approved = snapshot.get("checklist_approved", False) or session.status in (
         SessionStatus.REVIEWING,

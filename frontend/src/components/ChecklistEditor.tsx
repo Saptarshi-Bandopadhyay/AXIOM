@@ -20,6 +20,13 @@ export const ChecklistEditor: React.FC<ChecklistEditorProps> = ({
   const [editCriterionText, setEditCriterionText] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
 
+  // Synchronize internal items state whenever parent supplies new criteria
+  React.useEffect(() => {
+    if (initialItems && initialItems.length > 0) {
+      setItems(initialItems);
+    }
+  }, [initialItems]);
+
   // New criterion state
   const [newTier, setNewTier] = useState<1 | 2>(2);
   const [newCategory, setNewCategory] = useState("Custom Criterion");

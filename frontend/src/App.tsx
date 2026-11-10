@@ -50,16 +50,19 @@ export const App: React.FC = () => {
       try {
         if (status === "EXTRACTING" || status === "CLASSIFYING" || status === "PENDING_INPUT") {
           const session = await apiClient.getSession(currentSessionId);
-          setStatus(session.status);
 
           if (session.status === "AWAITING_CHECKLIST_APPROVAL") {
             const checklistRes = await apiClient.getChecklist(currentSessionId);
             setCandidateChecklist(checklistRes.checklist);
             setPrimaryParadigm(session.paper?.primary_research_type || null);
+            setStatus(session.status);
             stopPolling();
           } else if (session.status === "FAILED") {
             setErrorMessage(session.error_message || "Session failed during processing.");
+            setStatus(session.status);
             stopPolling();
+          } else {
+            setStatus(session.status);
           }
         } else if (status === "REVIEWING") {
           const reportRes = await apiClient.getReviewReport(currentSessionId);

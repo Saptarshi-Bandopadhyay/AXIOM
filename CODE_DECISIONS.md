@@ -405,3 +405,11 @@ Entries are organized by phase and task.
 - **Alternatives Considered**:
   - Minimal bullet point README: Leaves external developers uncertain about architecture, execution flows, and setup.
 - **Reason**: Ensures any engineer reading the documentation can understand the full project architecture, data flows, and setup instructions immediately.
+
+### CD-049: Synchronized Candidate Checklist State and Resilient JSON Extraction
+- **Task**: Checklist Customization & Approval Bug Fix.
+- **Choice**: Defer frontend view transition (`setStatus`) until the checklist is fetched from the API, add `useEffect` synchronization inside `ChecklistEditor` to sync local state with parent props, and enhance backend checklist JSON extraction to parse object wrappers (`{"checklist": [...]}`) and provide defensive Tier 1 fallback.
+- **Alternatives Considered**:
+  - Setting status before fetching checklist: Triggers a race condition where `ChecklistEditor` mounts with an empty list (`[]`) and never updates its local state from subsequent prop changes.
+  - Strict JSON array extraction: Fails when LLMs wrap criteria in a dictionary or markdown prose.
+- **Reason**: Guarantees users always see the generated criteria upon entering the checklist editor and prevents zero-criteria deadlocks.
