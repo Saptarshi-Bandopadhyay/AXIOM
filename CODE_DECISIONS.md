@@ -325,7 +325,47 @@ Entries are organized by phase and task.
 
 ## Phase 7: Frontend Setup and User Interface
 
-*(Entries will be added as each Phase 7 task is implemented.)*
+### CD-038: Native Fetch API Client with Strict TypeScript Correspondence
+- **Task**: Tasks 7.1 & 7.2 — Initialize frontend and implement API client.
+- **Choice**: Implement a lightweight API client using standard `fetch` and typed schemas matching backend Pydantic models.
+- **Alternatives Considered**:
+  - Adding Axios or TanStack Query: Adds unnecessary bundle weight and abstraction layers for a focused linear review flow.
+- **Reason**: Standard `fetch` handles multipart PDF uploads, JSON payloads, and error parsing in under 90 lines of code.
+
+### CD-039: Component State Machine without External Global Stores
+- **Task**: Tasks 7.3 & 7.8 — Manage multi-step review lifecycle in `App.tsx`.
+- **Choice**: Use standard React `useState` and `useEffect` with intervals for status polling across `IDLE`, `EXTRACTING`, `AWAITING_CHECKLIST_APPROVAL`, `REVIEWING`, and `COMPLETED`.
+- **Alternatives Considered**:
+  - Introducing Redux, Zustand, or XState: Introduces boilerplate and complex store setup for single-session reviews.
+- **Reason**: Adheres to KISS and minimizes code liability while keeping lifecycle transitions transparent and easy to debug.
+
+### CD-040: Interactive Two-Tier Checklist Editor
+- **Task**: Task 7.5 — Implement `frontend/src/components/ChecklistEditor.tsx`.
+- **Choice**: Present criteria separated into Tier 1 (Universal Rigor) and Tier 2 (Domain Heuristics) with toggles, inline question editing, and custom criterion creation.
+- **Alternatives Considered**:
+  - Unstructured flat checklist: Blurs the distinction between core empirical science standards and domain-specific checks.
+- **Reason**: Provides researchers clear visibility into universal versus specialized criteria before resuming automated review.
+
+### CD-041: Verbatim Evidence Drawers and Status Badges
+- **Task**: Task 7.6 — Implement `frontend/src/components/ReviewReportView.tsx`.
+- **Choice**: Filter findings by status (`MET`, `INCOMPLETE`, `MISSING`) and provide collapsible drawers showing verbatim excerpts for each finding.
+- **Alternatives Considered**:
+  - Displaying all quotes expanded by default: Clutters the report view and overwhelms users on lengthy papers.
+- **Reason**: Keeps report clean while enabling instant inspection of exact quotes backing each finding.
+
+### CD-042: Grounded Q&A Slide-Over Drawer with Grounding Disclaimer
+- **Task**: Task 7.7 — Implement `frontend/src/components/GroundedQnADrawer.tsx`.
+- **Choice**: Provide a persistent drawer with quick-prompt suggestions and clear notice that answers cite only the submitted paper.
+- **Alternatives Considered**:
+  - Navigating away from the report to a separate chat page: Breaks reviewer context when exploring specific findings.
+- **Reason**: Lets researchers query methodology details alongside the review findings without losing context.
+
+### CD-043: Static SPA Mount in FastAPI
+- **Task**: Task 7.8 — Mount frontend distribution in `backend/app/main.py`.
+- **Choice**: Mount `frontend/dist` with `StaticFiles(directory=..., html=True)` after all API routers.
+- **Alternatives Considered**:
+  - Requiring two separate server processes in all environments: Increases setup overhead for local testing.
+- **Reason**: Enables single-port local execution while retaining hot module reloading during development via Vite dev server.
 
 ---
 

@@ -31,3 +31,13 @@ app.include_router(api_router, prefix=settings.API_PREFIX)
 async def health_check() -> dict[str, str]:
     """Health check endpoint to verify backend service availability."""
     return {"status": "ok", "service": "reprocheck-backend"}
+
+
+# Mount static frontend production build if available
+import os
+from fastapi.staticfiles import StaticFiles
+
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../frontend/dist"))
+if os.path.isdir(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
+

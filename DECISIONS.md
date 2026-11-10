@@ -156,3 +156,18 @@ It explains the choices made, the reasons for each choice, and the consequences.
   - Building the backend first verifies workflow correctness, API contracts, and evaluations before UI integration.
 - **Consequences**:
   - Developers use `uv` commands (`uv run`, `uv add`) for backend development.
+
+---
+
+## ADR-012: Frontend Architecture with React 18 and Vite
+
+- **Status**: Accepted
+- **Context**: The user interface needs clear paper submission, interactive checklist editing, and report visualization.
+- **Decision**: Use React 18, Vite, TypeScript, and Tailwind CSS in a single-page application.
+- **Reasons**:
+  - Vite offers fast local development and lightweight builds.
+  - TypeScript provides type safety aligned with backend schemas.
+  - Standard React hooks manage state without heavy external libraries.
+  - Tailwind CSS provides clean, consistent styling with minimal code.
+- **Consequences**:
+  - The frontend builds into static assets that FastAPI can serve directly or through a reverse proxy.

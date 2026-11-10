@@ -71,14 +71,14 @@ For each task:
 
 ## Phase 7: Frontend Setup and User Interface
 
-- [ ] **Task 7.1**: Initialize frontend with Vite, React 18, TypeScript, and Tailwind CSS.
-- [ ] **Task 7.2**: Create TypeScript API client and shared data types matching backend schemas.
-- [ ] **Task 7.3**: Build paper submission component with PDF drag-and-drop and text paste area.
-- [ ] **Task 7.4**: Build research paradigm confirmation and selection badge component.
-- [ ] **Task 7.5**: Build interactive checklist editor component for adding, editing, and approving criteria.
-- [ ] **Task 7.6**: Build review report view with category cards, severity badges, and quote drawers.
-- [ ] **Task 7.7**: Build grounded Q&A chat drawer component with cited excerpts.
-- [ ] **Task 7.8**: Connect frontend views with verified backend endpoints.
+- [x] **Task 7.1**: Initialize frontend with Vite, React 18, TypeScript, and Tailwind CSS.
+- [x] **Task 7.2**: Create TypeScript API client and shared data types matching backend schemas.
+- [x] **Task 7.3**: Build paper submission component with PDF drag-and-drop and text paste area.
+- [x] **Task 7.4**: Build research paradigm confirmation and selection badge component.
+- [x] **Task 7.5**: Build interactive checklist editor component for adding, editing, and approving criteria.
+- [x] **Task 7.6**: Build review report view with category cards, severity badges, and quote drawers.
+- [x] **Task 7.7**: Build grounded Q&A chat drawer component with cited excerpts.
+- [x] **Task 7.8**: Connect frontend views with verified backend endpoints.
 
 ## Phase 8: End-to-End Verification and Documentation
 

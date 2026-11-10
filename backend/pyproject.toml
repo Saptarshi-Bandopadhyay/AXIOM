@@ -42,3 +42,4 @@ asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-p no:deepeval"
+norecursedirs = [".venv", "node_modules", "dist", ".git", ".bin"]
