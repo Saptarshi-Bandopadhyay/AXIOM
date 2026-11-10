@@ -11,7 +11,7 @@ def test_default_settings_load_successfully() -> None:
     assert settings.PROJECT_NAME == "ReproCheck API"
     assert settings.APP_ENV in ("development", "testing")
     assert "postgresql+asyncpg://" in settings.DATABASE_URL
-    assert settings.PRIMARY_MODEL == "gemini/gemini-1.5-flash"
+    assert settings.PRIMARY_MODEL == "gemini/gemini-3.1-flash-lite"
     assert settings.MAX_UPLOAD_SIZE_BYTES == 20 * 1024 * 1024
     assert isinstance(settings.UPLOAD_DIR, Path)
 

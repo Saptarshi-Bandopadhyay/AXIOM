@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     """Application settings loaded from environment or .env file."""
 
     model_config = SettingsConfigDict(
-        env_file=(".env", "../.env"),
+        env_file=(".env", "backend/.env", "../.env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -46,9 +46,9 @@ class Settings(BaseSettings):
     # --------------------------------------------------------------------------
     # Model Gateway Configuration (Free Gemini and Groq models)
     # --------------------------------------------------------------------------
-    PRIMARY_MODEL: str = "gemini/gemini-1.5-flash"
-    FALLBACK_MODEL: str = "groq/llama-3.3-70b-versatile"
-    FAST_CHEAP_MODEL: str = "groq/llama-3.1-8b-instant"
+    PRIMARY_MODEL: str = "gemini/gemini-3.1-flash-lite"
+    FALLBACK_MODEL: str = "groq/openai/gpt-oss-120b"
+    FAST_CHEAP_MODEL: str = "groq/openai/gpt-oss-20b"
 
     GEMINI_API_KEY: str | None = None
     GROQ_API_KEY: str | None = None

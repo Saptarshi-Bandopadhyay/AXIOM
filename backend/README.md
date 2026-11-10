@@ -102,5 +102,5 @@ uv run pytest tests/integration/test_e2e_verification.py -v
 | `REDIS_URL` | Redis cache connection string | `redis://127.0.0.1:6379/0` |
 | `GEMINI_API_KEY` | Google Gemini API key | None |
 | `GROQ_API_KEY` | Groq API key | None |
-| `PRIMARY_MODEL` | Primary LLM gateway model | `gemini/gemini-1.5-flash` |
-| `FALLBACK_MODEL` | Primary fallback model | `groq/llama-3.3-70b-versatile` |
+| `PRIMARY_MODEL` | Primary LLM gateway model | `gemini/gemini-3.1-flash-lite` |
+| `FALLBACK_MODEL` | Primary fallback model | `groq/openai/gpt-oss-120b` |

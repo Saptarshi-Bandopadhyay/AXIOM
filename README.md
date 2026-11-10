@@ -47,8 +47,8 @@ flowchart TD
     Workflow_Engine --> Gateway["LiteLLM Gateway & Resilience Engine"]
 
     subgraph LLM_Cascade["Model Cascade (Free Tiers)"]
-        Gateway --> Primary["Primary: Gemini 1.5 Flash"]
-        Gateway -.->|"Fallback Cascade"| Secondary["Fallback: Groq Llama 3.3 70B / 3.1 8B"]
+        Gateway --> Primary["Primary: Gemini 3.1 Flash Lite"]
+        Gateway -.->|"Fallback Cascade"| Secondary["Fallback: Groq GPT-OSS 120B / 20B"]
         Gateway --> Langfuse["Langfuse Observability (Text Masked)"]
     end
 ```
@@ -287,9 +287,9 @@ GEMINI_API_KEY="your-gemini-api-key"
 GROQ_API_KEY="your-groq-api-key"
 
 # LiteLLM Configuration
-PRIMARY_MODEL="gemini/gemini-1.5-flash"
-FALLBACK_MODEL="groq/llama-3.3-70b-versatile"
-EMERGENCY_MODEL="groq/llama-3.1-8b-instant"
+PRIMARY_MODEL="gemini/gemini-3.1-flash-lite"
+FALLBACK_MODEL="groq/openai/gpt-oss-120b"
+EMERGENCY_MODEL="groq/openai/gpt-oss-20b"
 
 # Langfuse Observability (Optional)
 LANGFUSE_PUBLIC_KEY=""
