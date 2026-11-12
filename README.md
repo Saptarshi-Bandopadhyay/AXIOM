@@ -464,16 +464,35 @@ uv run --project backend pytest backend/tests/integration/ -v
 
 ---
 
-## 9. Core Engineering Principles
+## 9. Free Cloud Deployment & CI/CD
+
+ReproCheck is designed to deploy on free-tier cloud infrastructure with automated continuous integration and continuous deployment (CI/CD):
+
+- **Free Cloud Stack**:
+  - **Hosting**: Render or Koyeb (Free Web Service running production Docker container).
+  - **Database**: Neon Serverless PostgreSQL (Free 0.5 GB storage, always active).
+  - **Cache**: Upstash Redis (Free 10,000 commands/day).
+  - **Model APIs**: Gemini 3.1 Flash Lite & Groq GPT-OSS free tiers.
+- **Automated CI/CD Pipeline**:
+  - Configured in [.github/workflows/ci-cd.yml](file:///.github/workflows/ci-cd.yml).
+  - **Offline Tests**: Runs on every pull request and push to `main` with mocked LLM responses (0 API tokens consumed, completes in <2 minutes).
+  - **Optional LLM Evaluations**: Triggered on demand via GitHub Actions manual workflow dispatch or commit message tag `[run-evals]` using repository secrets (`GEMINI_API_KEY`, `GROQ_API_KEY`).
+  - **Continuous Deployment**: Automatically triggers cloud deploy hook when tests pass on `main`.
+
+For complete step-by-step setup instructions, see the [DEPLOYMENT.md](file:///media/sage/Data/Documents/reprocheck/DEPLOYMENT.md) guide.
+
+---
+
+## 10. Core Engineering Principles
 
 - **KISS (Keep It Simple, Stupid)**: Favor readable, direct code over heavy design patterns, unnecessary wrappers, and speculative abstractions.
 - **Code Liability**: Code is a maintenance liability. Accomplish system goals with minimal code lines, clear modularity, and high test coverage.
 - **Maintainability & Documentation**: Adhere to ASD-STE100 principles (short sentences, active voice, clear headings). Architectural decisions are recorded in `DECISIONS.md`, and code-level technical choices in `CODE_DECISIONS.md`.
 - **Zero Hallucination & Data Privacy**: Never synthesize quotes or send unmasked research paper text to third-party observability providers.
-- **Free Model Cascade**: Operates on free-tier models (Gemini 1.5 Flash and Groq Llama 3.3/3.1) with prompt caching and exponential backoffs to eliminate operational cost.
+- **Free Model Cascade**: Operates on free-tier models (Gemini 3.1 Flash Lite and Groq GPT-OSS) with prompt caching and exponential backoffs to eliminate operational cost.
 
 ---
 
-## 10. License
+## 11. License
 
 ReproCheck is distributed under the MIT License.

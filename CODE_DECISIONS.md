@@ -413,3 +413,12 @@ Entries are organized by phase and task.
   - Setting status before fetching checklist: Triggers a race condition where `ChecklistEditor` mounts with an empty list (`[]`) and never updates its local state from subsequent prop changes.
   - Strict JSON array extraction: Fails when LLMs wrap criteria in a dictionary or markdown prose.
 - **Reason**: Guarantees users always see the generated criteria upon entering the checklist editor and prevents zero-criteria deadlocks.
+
+### CD-050: Multi-Stage Production Container and Conditional CI/CD Workflow
+- **Task**: Free Cloud Deployment and CI/CD Setup.
+- **Choice**: Use a multi-stage Docker build packaging both React SPA and FastAPI backend into a single container image, and implement a 3-tier GitHub Actions workflow with offline test isolation, conditional LLM evaluations (`workflow_dispatch` checkbox / `[run-evals]` keyword), and automated webhook deployment.
+- **Alternatives Considered**:
+  - Deploying frontend and backend to separate cloud services: Increases infrastructure complexity, requires managing cross-origin credentials (CORS), and doubles deployment coordination overhead.
+  - Running live LLM tests on every git commit: Quickly exhausts free tier API quotas (Gemini/Groq RPM/RPD limits) and causes CI timeouts.
+  - Disabling LLM tests completely: Leaves model-dependent nodes without regression verification.
+- **Reason**: Single container packaging simplifies free cloud hosting on Render or Koyeb while eliminating CORS. Conditional LLM evaluation preserves free API quotas during regular development while enabling full end-to-end regression testing on demand.
