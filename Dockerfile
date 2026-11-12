@@ -12,22 +12,23 @@ RUN npm run build
 FROM python:3.12-slim AS runner
 WORKDIR /app
 
-# Install runtime utilities
+# Install runtime utilities and build essentials
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
+    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy uv binary for fast Python package installation
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-# Install Python backend dependencies in virtual environment
-COPY backend/pyproject.toml /app/backend/
-RUN uv venv /app/.venv && \
-    VIRTUAL_ENV=/app/.venv uv pip install --no-cache -e "/app/backend"
-
-# Copy backend application source code and migrations
+# Copy backend application source code, configuration, and migrations
 COPY backend/ /app/backend/
+
+# Install Python backend dependencies into virtual environment
+RUN uv venv /app/.venv && \
+    uv pip install --python /app/.venv --no-cache -e "/app/backend"
 
 # Copy compiled frontend distribution from builder stage
 COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist

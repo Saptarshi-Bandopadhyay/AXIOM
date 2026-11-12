@@ -430,3 +430,10 @@ Entries are organized by phase and task.
   - Relying solely on manual database pre-migration: Causes fresh CI service containers to fail with `UndefinedTableError: relation "review_sessions" does not exist`.
   - Using `localhost` hostname in CI runner service URLs: Can trigger IPv6 `::1` connection errors on Ubuntu runners when Docker only forwards IPv4 ports.
 - **Reason**: Ensures integration tests execute cleanly in both local and CI environments against any fresh or pre-existing PostgreSQL container without manual intervention.
+
+### CD-052: Complete Backend Context Copying in Docker Build
+- **Task**: Fix Render Cloud Docker Deployment Failure.
+- **Choice**: Copy the full `backend/` directory (`COPY backend/ /app/backend/`) before executing `uv pip install -e "/app/backend"`, and install build essentials (`gcc`, `python3-dev`).
+- **Alternatives Considered**:
+  - Copying only `pyproject.toml` prior to installation: Causes `hatchling` editable build failure because package root `app/` and referenced `README.md` do not exist in the image filesystem yet.
+- **Reason**: Satisfies `hatchling` packaging requirements during editable installation while keeping image layer caching simple and reliable.
