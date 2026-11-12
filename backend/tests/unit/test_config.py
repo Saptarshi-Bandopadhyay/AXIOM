@@ -21,3 +21,19 @@ def test_get_settings_returns_cached_instance() -> None:
     instance_one = get_settings()
     instance_two = get_settings()
     assert instance_one is instance_two
+
+
+def test_database_url_normalization() -> None:
+    """Verify that typo schemes like postgresql+async:// and legacy postgres:// are normalized."""
+    from app.config import Settings
+
+    # Typo: postgresql+async://
+    s1 = Settings(DATABASE_URL="postgresql+async://user:pass@ep-xyz.neon.tech/neondb?ssl=require")
+    assert s1.DATABASE_URL == "postgresql+asyncpg://user:pass@ep-xyz.neon.tech/neondb?ssl=require"
+    assert s1.DATABASE_URL_SYNC == "postgresql://user:pass@ep-xyz.neon.tech/neondb?ssl=require"
+
+    # Legacy: postgres://
+    s2 = Settings(DATABASE_URL="postgres://user:pass@ep-xyz.neon.tech/neondb?ssl=require")
+    assert s2.DATABASE_URL == "postgresql+asyncpg://user:pass@ep-xyz.neon.tech/neondb?ssl=require"
+    assert s2.DATABASE_URL_SYNC == "postgresql://user:pass@ep-xyz.neon.tech/neondb?ssl=require"
+

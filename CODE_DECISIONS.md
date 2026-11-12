@@ -437,3 +437,10 @@ Entries are organized by phase and task.
 - **Alternatives Considered**:
   - Copying only `pyproject.toml` prior to installation: Causes `hatchling` editable build failure because package root `app/` and referenced `README.md` do not exist in the image filesystem yet.
 - **Reason**: Satisfies `hatchling` packaging requirements during editable installation while keeping image layer caching simple and reliable.
+
+### CD-053: Automatic Database URL Scheme Normalization and Sync URL Derivation
+- **Task**: Fix SQLAlchemy Dialect Loading Crash (`NoSuchModuleError: postgresql.async`).
+- **Choice**: Implement Pydantic validators on `Settings.DATABASE_URL` and `Settings.DATABASE_URL_SYNC` to automatically convert typo schemes (`postgresql+async://` -> `postgresql+asyncpg://`), legacy schemes (`postgres://` -> `postgresql+asyncpg://`), and auto-derive synchronous migration URLs if not explicitly specified.
+- **Alternatives Considered**:
+  - Requiring users to format connection URLs manually in cloud provider dashboards: Fragile and causes deployment startup crashes on slight typos or standard Heroku/Render URI formats.
+- **Reason**: Guarantees SQLAlchemy engine initialization succeeds across all cloud hosting providers and manual entry variations without manual intervention.
