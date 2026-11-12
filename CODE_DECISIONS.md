@@ -422,3 +422,11 @@ Entries are organized by phase and task.
   - Running live LLM tests on every git commit: Quickly exhausts free tier API quotas (Gemini/Groq RPM/RPD limits) and causes CI timeouts.
   - Disabling LLM tests completely: Leaves model-dependent nodes without regression verification.
 - **Reason**: Single container packaging simplifies free cloud hosting on Render or Koyeb while eliminating CORS. Conditional LLM evaluation preserves free API quotas during regular development while enabling full end-to-end regression testing on demand.
+
+### CD-051: Automated Integration Test Schema Initialization and CI Loopback Resolution
+- **Task**: Fix GitHub Actions CI Integration Test Failures.
+- **Choice**: Provide an automated `conftest.py` fixture for integration tests that runs `Base.metadata.create_all` against the active test database, add explicit `uv run alembic upgrade head` migration steps in GitHub Actions, and bind service URLs to `127.0.0.1` instead of `localhost`.
+- **Alternatives Considered**:
+  - Relying solely on manual database pre-migration: Causes fresh CI service containers to fail with `UndefinedTableError: relation "review_sessions" does not exist`.
+  - Using `localhost` hostname in CI runner service URLs: Can trigger IPv6 `::1` connection errors on Ubuntu runners when Docker only forwards IPv4 ports.
+- **Reason**: Ensures integration tests execute cleanly in both local and CI environments against any fresh or pre-existing PostgreSQL container without manual intervention.
